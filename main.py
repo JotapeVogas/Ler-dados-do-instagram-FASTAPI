@@ -62,21 +62,16 @@ def processar_dados_usuarios(dados: Any, chave_relacionamento: Optional[str] = N
     return usuarios
 
 def criar_arquivo_nao_seguem_de_volta():
-    """Cria um arquivo JSON com pessoas que não te seguem de volta"""
     try:
-        # Ler dados dos arquivos
         dados_following = ler_arquivo_json("following.json")
         dados_followers = ler_arquivo_json("followers_1.json")
         
-        # Processar dados
         seguindo = processar_dados_usuarios(dados_following, "relationships_following")
         seguidores = processar_dados_usuarios(dados_followers)
         
-        # Encontrar quem não segue de volta
         usernames_seguidores = {u.username for u in seguidores}
         nao_seguem_de_volta = [u for u in seguindo if u.username not in usernames_seguidores]
         
-        # Converter para formato JSON compatível com os outros arquivos
         json_data = []
         for user in nao_seguem_de_volta:
             json_data.append({
@@ -89,7 +84,6 @@ def criar_arquivo_nao_seguem_de_volta():
                 }]
             })
         
-        # Salvar arquivo
         caminho_arquivo = os.path.join(PASTA_JSON, 'nao_me_seguem_de_volta.json')
         with open(caminho_arquivo, 'w', encoding='utf-8') as f:
             json.dump(json_data, f, ensure_ascii=False, indent=2)
@@ -113,7 +107,6 @@ def ler_arquivo_instagram(
         "nao_me_seguem_de_volta"
     ] = Path(..., description='Selecione o tipo de dados que deseja ver'),
 ):
-    # Mapear nomes amigáveis para nomes reais dos arquivos
     mapeamento_arquivos = {
         'amigos_proximos': 'close_friends.json',
         'seguidores': 'followers_1.json',
@@ -127,17 +120,14 @@ def ler_arquivo_instagram(
         'nao_me_seguem_de_volta': 'nao_me_seguem_de_volta.json'
     }
     
-    # Obter nome real do arquivo
     nome_arquivo_real = mapeamento_arquivos.get(arquivo)
     
-    # Se for solicitado o arquivo de quem não segue de volta, criar/atualizar primeiro
     if arquivo == "nao_me_seguem_de_volta":
         total_criados = criar_arquivo_nao_seguem_de_volta()
         print(f"Arquivo criado com {total_criados} pessoas que não te seguem de volta")
     
     dados = ler_arquivo_json(nome_arquivo_real)
     
-    # Mapear arquivo real para chave de relacionamento apropriada
     mapeamento_chaves = {
         'following.json': 'relationships_following',
         'close_friends.json': 'relationships_close_friends', 
@@ -146,13 +136,11 @@ def ler_arquivo_instagram(
         'hide_story_from.json': 'relationships_hide_stories_from',
         'removed_suggestions.json': 'relationships_dismissed_suggested_users',
         'recent_follow_requests.json': 'relationships_follow_requests_sent'
-        # nao_me_seguem_de_volta.json e followers_1.json são listas diretas, não precisam de chave
     }
     
     chave = mapeamento_chaves.get(nome_arquivo_real)
     usuarios = processar_dados_usuarios(dados, chave)
 
-    # limpa timestamps para saída
     for user in usuarios:
         user.timestamp = None
         user.formatted_date = None
@@ -161,7 +149,6 @@ def ler_arquivo_instagram(
 
 @app.get("/", summary="Página inicial")
 def home():
-    """Página inicial da API com explicações em português"""
     return {
         "mensagem": "🔍 API para ver dados do Instagram",
         "documentacao": "/docs",
