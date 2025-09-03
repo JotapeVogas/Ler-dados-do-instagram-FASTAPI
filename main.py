@@ -150,22 +150,7 @@ def ler_arquivo_instagram(
 @app.get("/", summary="Página inicial")
 def home():
     return {
-        "mensagem": "🔍 API para ver dados do Instagram",
-        "documentacao": "/docs",
-        "endpoint_principal": "/arquivo/{tipo_de_dados}",
-        "opcoes_disponiveis": {
-            "amigos_proximos": "👥 Lista dos seus amigos próximos",
-            "seguidores": "👤 Lista de quem te segue", 
-            "pessoas_que_sigo": "➡️ Lista de quem você segue",
-            "solicitacoes_recebidas": "📩 Solicitações de seguir que você recebeu",
-            "ocultar_story_de": "👁️ Pessoas que não veem seus stories",
-            "solicitacoes_pendentes": "⏳ Suas solicitações de seguir pendentes",
-            "desseguidos_recentemente": "📤 Pessoas que você deixou de seguir recentemente",
-            "solicitacoes_recentes": "🆕 Solicitações de seguir recentes",
-            "sugestoes_removidas": "❌ Sugestões de pessoas que você removeu",
-            "nao_me_seguem_de_volta": "💔 Pessoas que você segue mas não te seguem de volta (gerado automaticamente)"
-        },
-        "exemplo_uso": "/arquivo/nao_me_seguem_de_volta"
+        "digite /docs no final da URL"
     }
 
 if __name__ == "__main__":
